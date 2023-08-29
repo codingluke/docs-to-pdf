@@ -10,6 +10,8 @@ import {
   generateCoverHtml,
   replaceHeader,
   matchKeyword,
+  isPageKept,
+  openDetails,
 } from '../src/utils';
 
 const execPath =
@@ -301,5 +303,218 @@ describe('matchKeyword', () => {
 
   it('should be false with a nonexisting filterKeyword', async () => {
     expect(await matchKeyword(page, 'no-match')).toBe(false);
+  });
+  it('should be false when no meta keywords are present', async () => {
+    await page.setContent(`
+      <html>
+        <head>
+        </head>
+        <body>
+          <div id="content">Hello, world!</div>
+        </body>
+      </html>
+    `);
+    expect(await matchKeyword(page, 'match')).toBe(false);
+  });
+});
+
+describe('isPageKept function', () => {
+  let page: puppeteer.Page;
+  let browser: puppeteer.Browser;
+
+  beforeAll(async () => {
+    browser = await puppeteer.launch({
+      headless: 'new',
+      executablePath: execPath,
+    });
+    page = await browser.newPage();
+    await page.setContent(`
+      <html>
+        <head>
+          <meta name="keywords" content="keep" />
+        </head>
+        <body>
+          <div id="content">Hello, world!</div>
+        </body>
+      </html>
+    `);
+  }, 30000);
+
+  afterAll(async () => {
+    await browser.close();
+  });
+  it('should exclude a page when the URL is in the excludeUrls list', async () => {
+    console.debug('test: should exclude a page when any condition is matched');
+    const result = await isPageKept(
+      page,
+      'https://example.com/exclude',
+      '',
+      ['https://example.com/exclude'],
+      '',
+      [],
+      false,
+    );
+    expect(result).toBe(false);
+  });
+
+  it('should exclude a page if the filterKeyword is not matched', async () => {
+    console.debug(
+      'test: should exclude a page if the filterKeyword is not matched',
+    );
+    const result = await isPageKept(
+      page,
+      'https://example.com/keep',
+      '',
+      [],
+      'no-match',
+      [],
+      false,
+    );
+    expect(result).toBe(false);
+  });
+
+  it('shoud exclude a page if the path of the URL is in the excludePaths list', async () => {
+    console.debug(
+      'test: should exclude a page if the path of the URL is in the excludePaths list',
+    );
+    const result = await isPageKept(
+      page,
+      'https://example.com/exclude',
+      '',
+      [''],
+      '',
+      ['/exclude'],
+      false,
+    );
+    expect(result).toBe(false);
+  });
+
+  it('shoud exclude a page if restrictPath is true and the path of the URL dont match urlPath', async () => {
+    console.debug(
+      'test: shoud exclude a page if restrictPath is true and the path of the URL dont mach urlPath',
+    );
+    const result = await isPageKept(
+      page,
+      'https://example.com/exclude',
+      '/keep',
+      [],
+      '',
+      [],
+      true,
+    );
+    expect(result).toBe(false);
+  });
+
+  it('should keep a page if the URL is not in the excludeUrls list', async () => {
+    console.debug(
+      'test: should keep a page if the URL is not in the excludeUrls list',
+    );
+    const result = await isPageKept(
+      page,
+      'https://example.com/keep',
+      '',
+      ['https://example.com/exclude'],
+      '',
+      [],
+      false,
+    );
+    expect(result).toBe(true);
+  });
+
+  it('should keep a page if the filterKeyword is matched', async () => {
+    console.debug('test: should keep a page if the filterKeyword is matched');
+    const result = await isPageKept(
+      page,
+      'https://example.com/keep',
+      '',
+      [],
+      'keep',
+      [],
+      false,
+    );
+    expect(result).toBe(true);
+  });
+
+  it('should keep a page if the path of the URL is not in the excludePaths list', async () => {
+    console.debug(
+      'test: should keep a page if the path of the URL is not in the excludePaths list',
+    );
+    const result = await isPageKept(
+      page,
+      'https://example.com/keep',
+      '',
+      [''],
+      '',
+      ['/exclude'],
+      false,
+    );
+    expect(result).toBe(true);
+  });
+
+  it('should keep a page if restrictPath is true and the path of the URL match urlPath', async () => {
+    console.debug(
+      'test: should keep a page if restrictPath is true and the path of the URL match urlPath',
+    );
+    const result = await isPageKept(
+      page,
+      'https://example.com/keep',
+      '/keep',
+      [],
+      '',
+      [],
+      true,
+    );
+    expect(result).toBe(true);
+  });
+});
+
+describe('openDetails function', () => {
+  let page: puppeteer.Page;
+  let browser: puppeteer.Browser;
+
+  beforeAll(async () => {
+    browser = await puppeteer.launch({
+      headless: 'new',
+      executablePath: execPath,
+    });
+    page = await browser.newPage();
+  }, 30000);
+
+  afterAll(async () => {
+    await browser.close();
+  });
+
+  it('should open all details elements recursively', async () => {
+    // Mock the click and wait functions
+    const clickFunction = jest.fn(async () => {});
+    const waitFunction = jest.fn(async () => {});
+
+    // Mock a simple HTML page with nested <details> elements
+    await page.setContent(`
+      <details>
+        <summary>Toggle me!</summary>
+        <div>
+          <div>This is the detailed content</div>
+          <br/>
+          <details>
+            <summary>
+              Nested toggle! Some surprise inside...
+            </summary>
+            <div>😲😲😲😲😲</div>
+          </details>
+        </div>
+      </details>
+    `);
+
+    // Call the recursive function to open details elements
+    await openDetails(page, clickFunction, waitFunction);
+
+    // Assertions based on the mock functions
+    expect(clickFunction).toHaveBeenCalledTimes(2);
+    expect(waitFunction).toHaveBeenCalledTimes(2);
+    expect(waitFunction).toHaveBeenCalledWith(800);
+
+    // Close the browser
+    await browser.close();
   });
 });

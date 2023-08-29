@@ -1,5 +1,46 @@
 # Changelog
 
+## [0.6.2](https://github.com/jean-humann/docs-to-pdf/compare/v0.6.1...v0.6.2) (2023-08-22)
+
+
+### Bug Fixes
+
+* **docker:** publish workflow ([#217](https://github.com/jean-humann/docs-to-pdf/issues/217)) ([67eb3c7](https://github.com/jean-humann/docs-to-pdf/commit/67eb3c7e7763d81eaca15f87f66ccac02cda35db))
+
+## [0.6.1](https://github.com/jean-humann/docs-to-pdf/compare/v0.6.0...v0.6.1) (2023-08-19)
+
+
+### Bug Fixes
+
+* properly locate chrome for puppeteer ([#210](https://github.com/jean-humann/docs-to-pdf/issues/210)) ([c32bf33](https://github.com/jean-humann/docs-to-pdf/commit/c32bf33ea2c053bd97a6d27fda858994a74b723f))
+
+## [0.6.0](https://github.com/jean-humann/docs-to-pdf/compare/v0.5.1...v0.6.0) (2023-08-18)
+
+
+### Features
+
+* add option to restrict URL paths ([#202](https://github.com/jean-humann/docs-to-pdf/issues/202)) ([4e38c14](https://github.com/jean-humann/docs-to-pdf/commit/4e38c14987b46078fa9f0ec9e59942925482510d))
+* **docker:** add debian image ([#186](https://github.com/jean-humann/docs-to-pdf/issues/186)) ([0fc0056](https://github.com/jean-humann/docs-to-pdf/commit/0fc00569c716d6d311556bb9780915946a4fc940))
+
+
+### Bug Fixes
+
+* details not opened in PDF ([#203](https://github.com/jean-humann/docs-to-pdf/issues/203)) ([3dea229](https://github.com/jean-humann/docs-to-pdf/commit/3dea22996543e5f88614634afc90913a45682e51))
+
+## [0.5.1](https://github.com/jean-humann/docs-to-pdf/compare/v0.5.0...v0.5.1) (2023-08-09)
+
+
+### Bug Fixes
+
+* add puppeteer dependencie ([#181](https://github.com/jean-humann/docs-to-pdf/issues/181)) ([e3afecc](https://github.com/jean-humann/docs-to-pdf/commit/e3afecced6b26072aaffc115b7da3d7c7bbcb7f4))
+
+## [0.5.0](https://github.com/jean-humann/docs-to-pdf/compare/v0.4.0...v0.5.0) (2023-08-08)
+
+
+### Features
+
+* **generatePDF:** add option --baseUrl ([#167](https://github.com/jean-humann/docs-to-pdf/issues/167)) ([131517b](https://github.com/jean-humann/docs-to-pdf/commit/131517be69c49e0383e93f7124842afea078da96))
+
 ## [0.4.0](https://github.com/jean-humann/docs-to-pdf/compare/v0.3.1...v0.4.0) (2023-08-08)
 
 

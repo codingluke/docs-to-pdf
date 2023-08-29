@@ -11,22 +11,40 @@
 This is a PDF generator from document website such as `docusaurus`. This is a fork of [mr-pdf](https://github.com/KohheePeace/mr-pdf) which was not maintained anymore.
 Feel free to contribute to this project.
 
+## 📦 Installation
+
+```shell
+npm install -g docs-to-pdf
+```
+
+## 🚀 Quick Start
+
+```shell
+npx docs-to-pdf --initialDocURLs="https://docusaurus.io/docs/" --contentSelector="article" --paginationSelector="a.pagination-nav__link.pagination-nav__link--next" --excludeSelectors=".margin-vert--xl a,[class^='tocCollapsible'],.breadcrumbs,.theme-edit-this-page" --coverImage="https://docusaurus.io/img/docusaurus.png" --coverTitle="Docusaurus v2"
+```
+
 
 ## ⚡ Usage
 
 For [Docusaurus v2](https://docusaurus.io/docs)
 
 ```shell
+npx docs-to-pdf docusaurus --initialDocURLs="https://docusaurus.io/docs/"
+```
+
+OR
+
+```shell
 npx docs-to-pdf --initialDocURLs="https://docusaurus.io/docs/" --contentSelector="article" --paginationSelector="a.pagination-nav__link.pagination-nav__link--next" --excludeSelectors=".margin-vert--xl a,[class^='tocCollapsible'],.breadcrumbs,.theme-edit-this-page" --coverImage="https://docusaurus.io/img/docusaurus.png" --coverTitle="Docusaurus v2"
 ```
 
-## 🍗 CLI Options
+## 🍗 CLI Global Options
 
 | Option                 | Required | Description                                                                                                                                                                        |
 | ---------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `--initialDocURLs`     | Yes      | set URL to start generating PDF from.                                                                                                                                              |
-| `--contentSelector`    | Yes      | used to find the part of main content                                                                                                                                              |
-| `--paginationSelector` | Yes      | CSS Selector used to find next page to be printed for looping.                                                                                                                     |
+| `--contentSelector`    | No       | used to find the part of main content                                                                                                                                              |
+| `--paginationSelector` | No       | CSS Selector used to find next page to be printed for looping.                                                                                                                     |
 | `--excludeURLs`        | No       | URLs to be excluded in PDF                                                                                                                                                         |
 | `--excludeSelectors`   | No       | exclude selectors from PDF. Separate each selector **with comma and no space**. But you can use space in each selector. ex: `--excludeSelectors=".nav,.next > a"`                  |
 | `--cssStyle`           | No       | CSS style to adjust PDF output ex: `--cssStyle="body{padding-top: 0;}"` \*If you're project owner you can use `@media print { }` to edit CSS for PDF.                              |
@@ -42,7 +60,17 @@ npx docs-to-pdf --initialDocURLs="https://docusaurus.io/docs/" --contentSelector
 | `--puppeteerArgs`      | No       | Add puppeteer BrowserLaunchArgumentOptions arguments ex: --sandbox [Puppeteer document](https://pptr.dev/api/puppeteer.browserlaunchargumentoptions)                               |
 | `--protocolTimeout`    | No       | Timeout setting for individual protocol calls in milliseconds. If omitted, the default value of 180000 ms (3 min) is used                                                          |
 | `--filterKeyword`      | No       | Only adds pages to the PDF containing a given meta keywords. Makes it possible to generate PDFs of selected pages                                                                  |
+| `--baseUrl`            | No       | Base URL for all relative URLs. Allows to render the pdf on localhost (ci/Github Actions) while referencing the deployed page.                                                     |
+| `--excludePaths`       | No       | URL Paths to be excluded                                                                                                                                                           |
+| `--restrictPaths`      | No       | Keep Only URL Path with the same rootPath as  `--initialDocURLs`                                                                                                                   |
 |                        |          |                                                                                                                                                                                    |
+
+## Docusaurus Options
+
+| Option                 | Required | Description                                                                                                                                                                        |
+| ---------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--version`            | No       | Docusaurus version. Default is 2.                                                                                                                                                  |
+| `--builDir`            | No       | Path to Docusaurus build dir. Either absolute or relative from path of the shell                                                                                                   |
 
 ## 🎨 Examples and Demo PDF
 
@@ -61,6 +89,12 @@ npx docs-to-pdf --initialDocURLs="https://docusaurus.io/docs/" --contentSelector
 `command`:
 
 ```shell
+npx docs-to-pdf docusaurus --initialDocURLs="https://docusaurus.io/docs/"
+```
+
+OR
+
+```shell
 npx docs-to-pdf --initialDocURLs="https://docusaurus.io/docs/" --contentSelector="article" --paginationSelector="a.pagination-nav__link.pagination-nav__link--next" --excludeSelectors=".margin-vert--xl a,[class^='tocCollapsible'],.breadcrumbs,.theme-edit-this-page" --coverImage="https://docusaurus.io/img/docusaurus.png" --coverTitle="Docusaurus v2"
 ```
 
@@ -73,6 +107,12 @@ npx docs-to-pdf --initialDocURLs="https://docusaurus.io/docs/" --contentSelector
 `demoPDF`: <https://github.com/jean-humann/docs-to-pdf/blob/master/pdf/v1-docusaurus.pdf>
 
 `command`:
+
+```shell
+npx docs-to-pdf docusaurus --initialDocURLs="https://docusaurus.io/docs/en/installation" --version=1
+```
+
+OR
 
 ```shell
 npx docs-to-pdf --initialDocURLs="https://docusaurus.io/docs/en/installation" --contentSelector="article" --paginationSelector=".docs-prevnext > a.docs-next" --excludeSelectors=".fixedHeaderContainer,footer.nav-footer,#docsNav,nav.onPageNav,a.edit-page-link,div.docs-prevnext" --cssStyle=".navPusher {padding-top: 0;}" --pdfMargin="20"

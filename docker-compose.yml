@@ -4,7 +4,7 @@ services:
 
   docs-to-pdf:
     build:
-      context: docker
+      context: docker/alpine
     command:
     - bash
     - -c
